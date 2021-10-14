@@ -13,4 +13,4 @@ start=$(date +%s);
 log=$log.$start;
 echo $start > $log;
 timeout $timeout cat >> $log;
-date +%s >> $log"
+date +%s >> $log
