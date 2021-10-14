@@ -1,0 +1,43 @@
+gzip bomb: https://lord.re/en/posts/139-gzip-bomb-nginx/
+lexical crashing: documents filled with many characters, crashing the lexical analyzer parsing the document.
+Indefinetely deep dirs: http://example.com/bar/foo/bar/foo/bar/foo/bar/...
+Document generation: Dynamic pages that produce an unbounded number of documents for a web crawler to follow. Examples include calendars[1] and algorithmically generated language poetry.[2] http://writing.upenn.edu/epc/authors/hennessey/data/essays/sugarplum.htm
+
+Tarpit for delaying authentication:
+1. delaying authentication
+2. INcrease the transfer time of all emails by a few seconds
+3. delay only known spammers
+4. Greylisting users
+
+Rate limiting: https://www.nginx.com/blog/rate-limiting-nginx/
+
+
+Server attacks:
+Attacking servers using Slow loris https://github.com/gkbrk/slowloris
+
+Writing an nginx module:
+https://www.evanmiller.org/nginx-modules-guide.html
+
+Req limiting module:
+https://github.com/limithit/ngx_dynamic_limit_req_module
+
+Limit upstream module:
+https://github.com/cfsego/nginx-limit-upstream/
+
+Thoughts:
+The entry:
+You want to create a queue that allow only one connection at a time and put the other in a delay queue to start when the first has finished per ip address.
+Using Req rate limiting a configuraiton should be possible that only allow the first connection attempt and forward it to the sinkhole module.
+The reason we want this is that if the client can trigger infinite sinkholes they can eat up all the sockets on the server. They need to learn to shut down their own conneciton before being forwarded to the sinkhole.
+
+The sinkhole:
+The sinkhole is amodule that starts to produce a parsable http server response but stops after writing a header definition such as "server:" it simply hangs there for the client to wait to parse the rest. The socket is open until the client sends RST, preferrably all RST are ignored?
+The effect is that the client consumes its socket while others are waiting to get a connection and it simply blocks the crawler until it timeouts. If the server calculate the client timeout but counting the MS from request to RST then it can try to keep the connection open for as long as possible until it finalize the packet. Thus consume maximum crawler threads.
+
+Method:
+One method is to run the sinkhole server as a separate program on 8080 and have nginx forward requests using the request limiter to the service and thus creating a more modulearized design. There is a risk that nginx will use its client control to mess with the timeouts and ruin the fun.
+
+Measuring the defined --max-time could be an interesting result?
+Prividing a log including the user-agent, ip and max-time could be fun.
+Compare results with hydra and burp intruder.
+
