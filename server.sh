@@ -11,6 +11,6 @@ echo;
 # Log the request
 start=$(date +%s);
 log=$log.$start;
-echo $start > $log;
+echo "$start\n$SOCAT_PEERADDR" > $log;
 timeout $timeout cat >> $log;
 date +%s >> $log
