@@ -9,8 +9,8 @@ echo Content-Type\: text/plain;
 echo;
 
 # Log the request
-start=$(date +%s);
+start=$(date +%s%N);
 log=$log.$start;
 echo "$start\n$SOCAT_PEERADDR" > $log;
 timeout $timeout cat >> $log;
-date +%s >> $log
+date +%s%N >> $log
