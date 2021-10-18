@@ -2,6 +2,8 @@ gzip bomb: https://lord.re/en/posts/139-gzip-bomb-nginx/
 lexical crashing: documents filled with many characters, crashing the lexical analyzer parsing the document.
 Indefinetely deep dirs: http://example.com/bar/foo/bar/foo/bar/foo/bar/...
 Document generation: Dynamic pages that produce an unbounded number of documents for a web crawler to follow. Examples include calendars[1] and algorithmically generated language poetry.[2] http://writing.upenn.edu/epc/authors/hennessey/data/essays/sugarplum.htm
+Chunked encoding trap: https://github.com/Snawoot/httptrap
+A more reliable tarpit that sends one byte at a time: https://github.com/die-net/http-tarpit
 
 Tarpit for delaying authentication:
 1. delaying authentication
