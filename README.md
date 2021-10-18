@@ -48,4 +48,5 @@ Restart=always
 [Install]
 WantedBy=multi-user.target
 ```
-Start the service ```service kvicksand start```
+Start the service ```service kvicksand start``` or ```systemctl start kvicksand```
+
