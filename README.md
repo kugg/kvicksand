@@ -8,15 +8,10 @@ An example PoC for the issue described in this [report](https://hackerone.com/re
 
 Install socat:
 ```sudo apt-get install socat```
-Set up permissions and dirs:
-```
-mkdir logs
-chmod +x server.sh
-```
 
 ## Running
 ```
-socat -v -v TCP-LISTEN:8000,crlf,pktinfo,reuseaddr,fork SYSTEM:"./server.sh"
+./run-server.sh
 ```
 
 ## Make a service kvicksand
@@ -28,7 +23,8 @@ sudo setcap CAP_NET_BIND_SERVICE=+eip `which socat`
 Create a systemd unit with this name:
 ```/etc/systemd/system/kvicksand.service```
 
-Replace <your service user> with your service user and install dir path:
+Replace <your service user> with your service user, and adjust the paths in
+WorkingDirectory and ExecStart if needed.
 
 ```
 [Unit]
@@ -41,8 +37,8 @@ StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=kvicksand
 User=<your service user>
-WorkingDirectory=/home/<your service user>/kvicksand/
-ExecStart=/usr/bin/socat -v -v TCP-LISTEN:80,pktinfo,crlf,reuseaddr,fork SYSTEM:"./server.sh"
+WorkingDirectory=/home/<your service user>/kvicksand
+ExecStart=/home/<your service user>/kvicksand/run-server.sh 80
 Restart=always
 
 [Install]
